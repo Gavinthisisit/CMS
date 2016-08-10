@@ -62,9 +62,9 @@ def getDiscussionData(cursor):
         user_id = ret[3]
         discussion_id = ret[1]
         raw_message = ret[8]
-        message = getMessage(raw_message)
+        message = getMessage(raw_message).encode('utf-8')
         if parentid == 0:
-            first_post_dict[discussion_id] = [post_id]
+            first_post_dict[discussion_id] = post_id
         if discussion_id not in discussion_dict:
             discussion_dict[discussion_id] = []
             discussion_dict[discussion_id].append([post_id,parentid,user_id,message])
@@ -76,22 +76,24 @@ def getDiscussionData(cursor):
 def PrintFile(complain_dict,discussion_dict,parent_dict,first_post_dict):
     reply_dict = {}
     for id in complain_dict:
-        complaindir = './Complain/' + complain_dict[id][0]
+        complaindir = './Complain/' + str(id) 
         os.mkdir(complaindir)
         discussion_list = complain_dict[id]
         for discussion in discussion_list[1:]:
-            print discussion
             discussion_id = discussion[0]
             title = discussion[1]
             author = discussion[2]
             time = discussion[3]
-            filename = complaindir+'/'+title+'.txt'
+            filename = complaindir+'/'+str(discussion_id)+'.txt'
             out = open(filename,'w')
             post_list = discussion_dict[discussion_id]
             tab_dict = {}
             pre_id = first_post_dict[discussion_id]
             tab_dict[pre_id] = 0
-            tmpid = parent_dict[pre_id]
+            if pre_id in parent_dict:
+                tmpid = parent_dict[pre_id]
+            else:
+                tmpid = 0 
             while tmpid:
                 tab_dict[tmpid] = tab_dict[pre_id] + 1
                 pre_id = tmpid
@@ -103,30 +105,35 @@ def PrintFile(complain_dict,discussion_dict,parent_dict,first_post_dict):
                 reply_dict[discussion_id] = 'None'
             else:
                 reply_dict[discussion_id] = 'Yes'
-        
-        for post in post_list:
-            parent_id = post[1]
-            post_id = post[0]
-            user_id = post[2]
-            post_message = post[3]
-            if parent_id  != '0':
-                #tab_dict[post_id] = tab_dict[parent_id] + 1
-                line = '\t'*tab_dict[post_id] + '%s\t%s' % (post_message,user_id)
-                out.write(line+'\n')
-            else:
+            if discussion_id == 7:
+            for post in post_list:
+                parent_id = post[1]
                 post_id = post[0]
                 user_id = post[2]
                 post_message = post[3]
-                #tab_dict[post_id] = 0
-                line = '\t'*tab_dict[post_id] +'%s\t%s' % (post_message,user_id)
+                if parent_id  != '0':
+                    #tab_dict[post_id] = tab_dict[parent_id] + 1
+                    #line = '\t'*tab_dict[post_id] + '%s\t%s' % (post_message,user_id)
+                    line = '%s\t%s' % (post_message,user_id)
+                    try:
+                        out.write(line+'\n')
+                    except Exception,e:
+                        print 'Wrong!!!%s\t%s' % (line,e)
+                        continue
+                else:
+                    post_id = post[0]
+                    user_id = post[2]
+                    post_message = post[3]
+                    #tab_dict[post_id] = 0
+                    line = '\t'*tab_dict[post_id] +'%s\t%s' % (post_message,user_id)
+                    out.write(line+'\n')
+            out.close()
+            filename = complaindir + '/' + 'Replay_Count.txt'
+            out = open(filename,'w')
+            for id in reply_dict:
+                line = '%s\t%s' % (id,reply_dict[id])
                 out.write(line+'\n')
-        out.close()
-        filename = complaindir + '/' + 'Replay_Count.txt'
-        out = open(filename,'w')
-        for id in reply_dict:
-            line = '%s\t%s' % (id,reply_dict[id])
-            out.write(line+'\n')
-        out.close()
+            out.close()
 
 def _delete_dir_and_file(dirpath):
     try:
