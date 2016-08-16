@@ -72,6 +72,7 @@ if __name__ == '__main__':
         endtime = ret[24]
         workshop_dict[workshop_id] = [starttime,endtime]
         sql = "select * from `mdl_logstore_standard_log` where timecreated>%s and timecreated<%s;" % (starttime,endtime)
+        print sql,workshop_id
         results = getResults(cursor,sql)
         log_dict = getLogData(results)
         filename = 'log_sqlOut_'+str(workshop_id)+'.txt'

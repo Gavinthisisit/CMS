@@ -1,0 +1,22 @@
+select * from `mdl_logstore_standard_log` where timecreated>1456965600 and timec
+reated<1457078400; 3
+select * from `mdl_logstore_standard_log` where timecreated>1457521200 and timec
+reated<1457668800; 6
+select * from `mdl_logstore_standard_log` where timecreated>1458100800 and timec
+reated<1458280800; 7
+select * from `mdl_logstore_standard_log` where timecreated>1459735800 and timec
+reated<1460008800; 9
+select * from `mdl_logstore_standard_log` where timecreated>1460710800 and timec
+reated<1460826000; 10
+select * from `mdl_logstore_standard_log` where timecreated>1461322800 and timec
+reated<1461484800; 11
+select * from `mdl_logstore_standard_log` where timecreated>1462323600 and timec
+reated<1462456800; 12
+select * from `mdl_logstore_standard_log` where timecreated>1463104800 and timec
+reated<1463198400; 16
+select * from `mdl_logstore_standard_log` where timecreated>1463752800 and timec
+reated<1463806800; 17
+select * from `mdl_logstore_standard_log` where timecreated>1464962400 and timec
+reated<1465016400; 18
+select * from `mdl_logstore_standard_log` where timecreated>1465646400 and timec
+reated<1465711200; 19
