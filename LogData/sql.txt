@@ -20,3 +20,17 @@ select * from `mdl_logstore_standard_log` where timecreated>1464962400 and timec
 reated<1465016400; 18
 select * from `mdl_logstore_standard_log` where timecreated>1465646400 and timec
 reated<1465711200; 19
+
+#coding=utf-8
+
+import codecs,os,sys
+
+filename = 'mdl_logstore_standard_log.sql'
+i = 0
+for line in open(filename,'r'):
+    if 'mdl_logstore_standard_log' in line:
+        continue
+    fields = line[1:-2].split(',')
+    print fields[0]
+    if i>10:
+        break;
