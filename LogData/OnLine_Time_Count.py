@@ -46,16 +46,16 @@ def Log_time_action_Count(filename):
             continue
         if flag == 0:
             timecount = 0
-            pretime = string.atoi(b[2])
+            pretime = string.atoi(b[6])
             flag = 1
         else:
-            curtime = string.atoi(b[2])
+            curtime = string.atoi(b[6])
             time = curtime - pretime
             if(time <= 600):
                 timecount += time
             pretime = curtime
         #action count
-        acstring = b[1]
+        acstring = b[2]
         action = getAction(acstring)
         if action not in action_type_set:
             action_type_set.add(action)
