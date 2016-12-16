@@ -8,8 +8,8 @@ sys.setdefaultencoding('utf-8')
 homework_dir = 'D:\Dataprocess\homework'
 logdata_dir = 'D:\Dataprocess\LogTimeData'
 
-code_outdir = 'D:\Dataprocess\Code Data'
-test_outdir = 'D:\Dataprocess\Test Data'
+code_outdir = 'D:\Dataprocess\Home_Data\data_bak'
+#test_outdir = 'D:\Dataprocess\Test Data'
 
 homework_list = os.listdir(homework_dir)
 log_list = os.listdir(logdata_dir)
@@ -36,13 +36,24 @@ for work in homework_list:
         log_dict[user_id] = [action_count,time_count]
     i += 1
  ##作业数据   
-    outname = code_outdir + '\\' + str(i)+'_codedata.txt'
+    if i < 10:
+        outname = code_outdir + '\\' + '0%s' % (i) +'_homedata.txt'
+    else:
+        outname = code_outdir + '\\' + str(i) +'_homedata.txt'
     outfd = open(outname,'w')
-    line = '学生\t成绩\t提交时间\t动作统计\t在线时长\n'
+    line = '学生\t代码成绩\t测试成绩\t提交时间\t动作统计\t在线时长\n'
     outfd.write(line)
     for user_id in work_dict:
-        grade = work_dict[user_id][0]
+        code_grade = work_dict[user_id][0]
         uploadtime = work_dict[user_id][1]
+        if user_id in test_dict:
+            if test_dict[user_id][0] != 'None':
+                test_grade = 0.0 - float(test_dict[user_id][0])
+            else:
+                test_grade = test_dict[user_id][0]
+        else:
+            test_grade = 'None'
+            print user_id
         if user_id in log_dict:
             action_count = log_dict[user_id][0]
             time_count = log_dict[user_id][1]
@@ -50,10 +61,11 @@ for work in homework_list:
             print workname,logname,user_id
             action_count = 0
             time_count = 0
-        line = '%s\t%s\t%s\t%s\t%s' % (user_id,grade,uploadtime,action_count,time_count)        
+        line = '%s\t%s\t%s\t%s\t%s\t%s' % (user_id,code_grade,test_grade,uploadtime,action_count,time_count)        
         outfd.write(line+'\n')
     outfd.close()
 ##测试数据    
+'''
     outname = test_outdir + '\\' + str(i)+'_testdata.txt'
     outfd = open(outname,'w')
     line = '学生\t成绩\t动作统计\t在线时长\n'
@@ -70,3 +82,4 @@ for work in homework_list:
         line = '%s\t%s\t%s\t%s' % (user_id,grade,action_count,time_count)        
         outfd.write(line+'\n')
     outfd.close()
+'''

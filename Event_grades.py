@@ -30,5 +30,6 @@ for file in file_list:
         fields = lines[i].strip('\n').split('\t')
         point = fields[1]
         level = setLevel(point)
-        lines[i] = lines[i].strip('\n') + '\t%s\n' % (level)
+#        lines[i] = lines[i].strip('\n') + '\t%s\n' % (level)
+        lines[i] = '%s\t%s\t%s\t%s' % (fields[0],fields[1],fields[2],fields[3])
     open(filename,'w').writelines(lines)
