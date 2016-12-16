@@ -59,8 +59,24 @@ def Print(outname,log_dict):
             line = line+'\n'
             out.write(line)
     out.close()
+def PrintFile(results,outfile):
+    out = open(outfile,'w')
+    for ret in results:
+        id = ret[0]
+        action = ret[1]
+        user = ret[2]
+        time = ret[3]
+        line = '%s\t%s\t%s\t%s' % (id,action,user,time)
+        out.write(line+'\n')
+    out.close()
  
 if __name__ == '__main__':
+    dir = "D:/Dataprocess/LogData/"
+    cursor,con = getDBConnect('root','','course')
+    sql = 'select id,eventname,userid,timecreated from `mdl_logstore_standard_log` WHERE timecreated>1460973068;'
+    results = getResults(cursor,sql)
+    PrintFile(results,dir + 'log_file.out')
+'''
     dir = "D:/Dataprocess/LogData/"
     cursor,con = getDBConnect('root','','course')
     sql = 'select * from  `mdl_workshop`  where course=7;'
@@ -78,4 +94,4 @@ if __name__ == '__main__':
         filename = 'log_sqlOut_'+str(workshop_id)+'.txt'
         Print(dir+filename,log_dict)
     con.close()
-
+'''
